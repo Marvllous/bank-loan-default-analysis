@@ -283,23 +283,57 @@ Both pages share a year slicer for 2018 to 2021, and the status bars are clickab
 
 ## Key Findings
 
-### 1. The data the bank holds does not predict who will default
+### 1. The data the bank holds does not separate good borrowers from bad ones
 
-I compared default outcomes against every borrower characteristic in the dataset and tested whether the differences were real.
+Across the whole portfolio, 257 of 1,500 loans defaulted. That is a rate of 17.13%.
 
-A significance test asks a simple question. Is this difference big enough to be a genuine pattern, or could it easily have come about by chance? A result below 0.05 means the pattern is real. Above 0.05 means it could just be noise.
+I worked out the same rate for every borrower group the bank records, to see whether any of them sat meaningfully above or below that line.
 
-| Characteristic | Result | Verdict |
-|---|---|---|
-| Credit score | 0.443 | No relationship |
-| Income | 0.392 | No relationship |
-| Employment status | 0.929 | No relationship |
-| Loan type | 0.848 | No relationship |
-| Gender | 0.962 | No relationship |
-| Marital status | 0.956 | No relationship |
-| Loan term | 0.324 | No relationship |
+**Employment status**
 
-The clearest example is credit score, the field a bank relies on most:
+| Group | Loans | Defaults | Default rate |
+|---|---|---|---|
+| Unemployed | 235 | 42 | 17.87% |
+| Self-employed | 311 | 54 | 17.36% |
+| Employed | 954 | 161 | 16.88% |
+
+One percentage point separates an unemployed borrower from an employed one.
+
+**Loan type**
+
+| Group | Loans | Defaults | Default rate |
+|---|---|---|---|
+| Personal loan | 370 | 67 | 18.11% |
+| Auto loan | 358 | 64 | 17.88% |
+| Commercial loan | 372 | 62 | 16.67% |
+| Mortgage | 400 | 64 | 16.00% |
+
+Two percentage points across all four products.
+
+**Gender and marital status**
+
+| Group | Loans | Defaults | Default rate |
+|---|---|---|---|
+| Female | 433 | 75 | 17.32% |
+| Male | 1,067 | 182 | 17.06% |
+| Married | 952 | 164 | 17.23% |
+| Not married | 548 | 93 | 16.97% |
+
+A quarter of a percentage point on both.
+
+**Credit score**
+
+| Band | Loans | Defaults | Default rate |
+|---|---|---|---|
+| 300 to 410 | 82 | 16 | 19.51% |
+| 411 to 521 | 78 | 14 | 17.95% |
+| 522 to 632 | 237 | 32 | 13.50% |
+| 633 to 743 | 588 | 110 | 18.71% |
+| Above 744 | 515 | 85 | 16.50% |
+
+This is the one that matters most, and it is the clearest result in the table. If credit score worked, the default rate would fall steadily as the score rises. It does not. The lowest default rate in the portfolio belongs to the 522 to 632 band, which sits in the middle, and the second worst belongs to 633 to 743, which sits above it. The numbers move up and down with no relation to the score.
+
+The averages say the same thing:
 
 | Loan outcome | Average credit score |
 |---|---|
@@ -308,11 +342,19 @@ The clearest example is credit score, the field a bank relies on most:
 
 Four points apart on a scale running from 300 to 849.
 
-Employment tells the same story. Unemployed borrowers default at 17.87%, self-employed at 17.36%, employed at 16.88%. A gap of one percentage point across the three.
+**Income**
 
-Loan type is no different. Personal loans default at 18.11%, auto at 17.88%, commercial at 16.67% and mortgages at 16.00%.
+| Band | Loans | Defaults | Default rate |
+|---|---|---|---|
+| 8k to 21k | 235 | 42 | 17.87% |
+| 22k to 35k | 213 | 35 | 16.43% |
+| 36k to 49k | 341 | 64 | 18.77% |
+| 50k to 63k | 310 | 42 | 13.55% |
+| Above 64k | 401 | 74 | 18.45% |
 
-**What it means.** Every group in this portfolio defaults at roughly 17%. The bank's risk assessment is not separating anyone from anyone else.
+Same pattern as credit score. The highest income band defaults at a higher rate than the second lowest. There is no line to follow.
+
+**What it means.** Every group in this portfolio defaults at roughly 17%. Where there is spread, it does not line up with the thing being measured. A borrower's score, income, job or product does not tell the bank whether that borrower will pay.
 
 **Why it matters.** This is the business problem, confirmed with evidence instead of assumed. Approving a loan on these fields carries the same 17% loss rate no matter who is applying. The bank cannot price risk, cannot limit it and cannot forecast it, because it has no way of seeing it coming.
 
@@ -328,11 +370,9 @@ Loan type is no different. Personal loans default at 18.11%, auto at 17.88%, com
 | 633 to 743 | 6.08% |
 | Above 744 | 5.86% |
 
-The correlation between credit score and interest rate is -0.012. Correlation runs from -1 to 1, and anything this close to zero means the two move independently. In practice the bank charges around 6% whether the borrower scores 350 or 800, and the weakest band pays slightly less than the strongest.
+The bank charges around 6% whether the borrower scores 350 or 800. The weakest band on the list pays the lowest rate of all five.
 
-Credit score does influence something, though. Its correlation with loan amount is 0.31, and income is stronger still at 0.59.
-
-**What it means.** The bank uses credit score to decide how much to lend, not what to charge. Pricing is effectively flat across the whole book.
+**What it means.** Pricing is effectively flat across the whole book. The score is not being used to set the rate.
 
 **Why it matters.** Pricing is how a lender pays for the losses it cannot avoid. This bank is neither avoiding the risk nor charging for it. Over time, borrowers who could get a better rate elsewhere will leave, and those who could not will stay.
 
@@ -348,7 +388,7 @@ Credit score does influence something, though. Its correlation with loan amount 
 | $34k to $44k | 192 | 12.8% | 36 | 18.75% | $1.39M | 21.2% |
 | Above $44k | 259 | 17.3% | 47 | 18.15% | $2.63M | 40.1% |
 
-Loans above $44k are 17.3% of the book and carry 40.1% of the losses. Their default rate is 18.15% against 16.92% for everything else, which is barely different. The average defaulted loan in that band is $55,928. Everywhere else it is $18,728.
+Loans above $44k are 17.3% of the book and carry 40.1% of the losses. Their default rate is 18.15% against 16.92% for everything else, a gap of just over one point. The average defaulted loan in that band is $55,928. Everywhere else it is $18,728.
 
 **What it means.** Large loans do not fail more often. They fail at roughly the same rate as everything else. They just cost three times as much when they do.
 
@@ -396,18 +436,20 @@ Fifty of those loans are above $44k and carry $2.80M between them.
 
 ---
 
-### 6. One borrower group genuinely performs better
+### 6. One age band stands out from the rest
 
 | Age band | Loans | Defaults | Default rate |
 |---|---|---|---|
 | 28 to 34 | 366 | 71 | 19.40% |
-| 35 to 41 | 379 | 45 | **11.87%** |
+| 35 to 41 | 379 | 45 | 11.87% |
 | 42 to 48 | 382 | 67 | 17.54% |
 | Above 48 | 373 | 74 | 19.84% |
 
-Borrowers aged 35 to 41 default at 11.87% against 18.91% for everyone else. The test result is 0.0022, and it holds even after adjusting for the fact that eight characteristics were tested. This is the only characteristic in the entire dataset that survives.
+Borrowers aged 35 to 41 default at 11.87%, more than five points below the portfolio rate of 17.13% and almost eight points below the worst band. The four bands hold roughly the same number of loans, between 366 and 382 each, so this is not a small group producing a misleading rate.
 
-**An important caution.** This is a correlation, not a proven cause. Nothing in the data shows that being 38 makes someone repay. The likely explanation is something age stands in for, such as career stage or income stability, and the dataset does not contain those fields. Lending decisions based directly on age are also restricted in most markets.
+This is the widest and clearest gap anywhere in the dataset. Every other characteristic I checked sat within two points of the portfolio rate.
+
+**An important caution.** This is a pattern, not a proven cause. Nothing in the data shows that being 38 makes someone repay. The likely explanation is something age stands in for, such as career stage or income stability, and the dataset does not contain those fields. Lending decisions made directly on age are also restricted in most markets.
 
 **What it means.** Something real is happening in that group. The data shows it exists but does not explain it.
 
@@ -435,7 +477,7 @@ Borrowers aged 35 to 41 default at 11.87% against 18.91% for everyone else. The 
 
 ### 3. Rebuild the risk grade on repayment behaviour, not borrower description
 
-**Based on findings 1 and 6.** The fields the bank holds describe who the borrower is. None of them describe whether the borrower pays. The bank should start collecting debt to income ratio, existing credit commitments, previous payment history and length of time in employment. The age 35 to 41 result is the place to start looking, because something in that group is driving a genuinely lower default rate and identifying it would give the bank its first real predictor.
+**Based on findings 1 and 6.** The fields the bank holds describe who the borrower is. None of them describe whether the borrower pays. The bank should start collecting debt to income ratio, existing credit commitments, previous payment history and length of time in employment. The age 35 to 41 result is the place to start looking, because something in that group is driving a lower default rate and identifying it would give the bank its first real predictor.
 
 ### 4. Report a combined at risk rate alongside the default rate
 
@@ -447,7 +489,7 @@ Borrowers aged 35 to 41 default at 11.87% against 18.91% for everyone else. The 
 
 ### 6. Price for risk once a working risk grade exists
 
-**Based on finding 2.** Interest rates should move with the risk grade. Until that grade is rebuilt, the bank should not attach tiered pricing to the current credit score, because this analysis shows the score does not predict default.
+**Based on finding 2.** Interest rates should move with the risk grade. Until that grade is rebuilt, the bank should not attach tiered pricing to the current credit score, because this analysis shows the score does not track default.
 
 ---
 
@@ -455,7 +497,7 @@ Borrowers aged 35 to 41 default at 11.87% against 18.91% for everyone else. The 
 
 **The dataset has no outcome dates for bad loans.** Loan Paid Date is populated only for loans that were repaid. There is no date for when a loan entered arrears or default, so I cannot measure how long a loan survives before it fails, and I cannot confirm whether a repeat loan was approved before or after an earlier loan went bad.
 
-**Correlation is not cause.** The age 35 to 41 result is a real pattern in the data. It is not evidence that age causes repayment, and I have not presented it as such.
+**A pattern is not a cause.** The age 35 to 41 result is a real pattern in the data. It is not evidence that age causes repayment, and I have not presented it as such.
 
 **The period covers 2020.** Any movement across those years sits alongside the pandemic and the payment holiday schemes that came with it. The dataset holds nothing that would let me separate those effects from lending quality.
 

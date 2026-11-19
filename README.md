@@ -107,7 +107,7 @@ Interest should only count on loans where the borrower is actually paying. A def
 
 ## Date Table
 
-Power BI needs a dedicated date table to handle time intelligence properly. I built one in M rather than relying on the automatic date hierarchy.
+Power BI needs a dedicated date table to handle time intelligence properly. I built one in M instead relying on the automatic date hierarchy.
 
 ```m
 let
@@ -314,7 +314,7 @@ Loan type is no different. Personal loans default at 18.11%, auto at 17.88%, com
 
 **What it means.** Every group in this portfolio defaults at roughly 17%. The bank's risk assessment is not separating anyone from anyone else.
 
-**Why it matters.** This is the business problem, confirmed rather than assumed. Approving a loan on these fields carries the same 17% loss rate no matter who is applying. The bank cannot price risk, cannot limit it and cannot forecast it, because it has no way of seeing it coming.
+**Why it matters.** This is the business problem, confirmed with evidence instead of assumed. Approving a loan on these fields carries the same 17% loss rate no matter who is applying. The bank cannot price risk, cannot limit it and cannot forecast it, because it has no way of seeing it coming.
 
 ---
 
@@ -431,7 +431,7 @@ Borrowers aged 35 to 41 default at 11.87% against 18.91% for everyone else. The 
 
 ### 2. Build an arrears function and work the book by value
 
-**Based on finding 5.** $7.25M is still recoverable. $6.56M is not. Start with the 50 arrears cases above $44k holding $2.80M, rather than working through 318 cases in the order they arrived. Current reporting counts a $1,000 case and a $60,000 case as one case each.
+**Based on finding 5.** $7.25M is still recoverable. $6.56M is not. Start with the 50 arrears cases above $44k holding $2.80M, instead of working through 318 cases in the order they arrived. Current reporting counts a $1,000 case and a $60,000 case as one case each.
 
 ### 3. Rebuild the risk grade on repayment behaviour, not borrower description
 
@@ -483,4 +483,4 @@ Borrowers aged 35 to 41 default at 11.87% against 18.91% for everyone else. The 
 
 The result I did not expect was that none of the borrower characteristics separated the defaulters from the repayers. My first instinct looking at the dashboard was that the 633 to 743 credit score band was the problem, because it has the tallest bar and the most defaults. It has the most defaults because it is the largest band in the book, with 588 loans. Its default rate, 18.71%, is close to everything else.
 
-Checking the rate rather than the count changed the finding completely, and it changed the recommendation with it. The useful answer was not about borrower type at all. It was about loan size, where the same failure rate costs three times more.
+Checking the rate instead of the count changed the finding completely, and it changed the recommendation with it. The useful answer was not about borrower type at all. It was about loan size, where the same failure rate costs three times more.

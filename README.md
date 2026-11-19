@@ -90,7 +90,7 @@ The raw data arrived with continuous numeric columns that are hard to analyse di
   else "Above 44k"
 ```
 
-A note on these two. My first version used `>=` and `<=` on both sides of every band, which left gaps. A loan of $11,500 fell between the first band and the second and dropped into the final `else`, which labelled it "Above 44k". That put 116 loans worth $2.44M into the wrong band. I rewrote both formulas using a single upper bound per band so every value lands where it belongs. Loan Amount was also converted to whole numbers before banding.
+A note on the last two. My first version used `>=` and `<=` on both sides of every band, which left gaps. A loan of $11,500 fell between the first band and the second and dropped into the final `else`, which labelled it "Above 44k". That put 116 loans worth $2.44M into the wrong band. I rewrote both formulas using a single upper bound per band so every value lands where it belongs. Loan Amount was also converted to whole numbers before banding.
 
 ### Interest Sum
 
@@ -107,7 +107,7 @@ Interest should only count on loans where the borrower is actually paying. A def
 
 ## Date Table
 
-Power BI needs a dedicated date table to handle time intelligence properly. I built one in M instead relying on the automatic date hierarchy.
+Power BI needs a dedicated date table to handle time intelligence properly. I built one in M instead of relying on the automatic date hierarchy.
 
 ```m
 let

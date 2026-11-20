@@ -2,8 +2,6 @@
 
 A Power BI analysis of a 1,500 loan bank portfolio covering September 2018 to September 2021. The project investigates which borrowers default, whether the bank's own data can predict default, and where the losses are actually concentrated.
 
-![Loan Portfolio Overview](01_dashboard_overview.png)
-
 ---
 
 ## Business Problem
@@ -43,7 +41,59 @@ This is a case study dataset. The borrower names, addresses, emails and phone nu
 
 ## Tools
 
-Power BI Desktop. Power Query (M) for cleaning and transformation, DAX for measures, and a star schema data model.
+Power BI Desktop. Power Query (M) for cleaning and transformation, DAX for measures, and a three table model with a dedicated date table.
+
+---
+
+## The Dashboard
+
+Two pages. The first shows who the bank lends to. The second shows what happened to those loans. Read together, they are the whole argument.
+
+### Page 1: Loan Portfolio Overview
+
+![Loan Portfolio Overview](01_dashboard_overview.png)
+
+**1,500 loans, $36.62M lent, an average credit score of 681.17 and an average income of $46.57K.** On paper this is a cautious book.
+
+The breakdowns say the same thing. **$26.05M went to employed borrowers against $1.72M to unemployed**, with $8.85M to self-employed in between. The bank is screening on employment, and screening hard. Lending is spread evenly across age, $9.03M, $9.77M, $9.39M and $8.42M across the four bands, so no group dominates the book.
+
+The quarterly donuts show lending **peaking in 2019 at $12.28M**, then falling to $11.75M in 2020 and **$8.92M in 2021**. The bank was already pulling back.
+
+Read this page on its own and it looks like a lender doing everything right.
+
+### Page 2: Loan Status and Type Analysis
+
+![Loan Status and Type Analysis](02_dashboard_loan_status_type.png)
+
+**925 loans paid off, 318 in arrears, 257 defaulted.** A repayment rate of 61.7% against a delinquency rate of 21.2% and a default rate of 17.1%.
+
+In money, the Loan Volume by Loan Status chart reads **$22.80M repaid, $7.25M in arrears and $6.56M written off**. Add the last two and **$13.81M of the $36.62M lent, 37.7% of the book, is not performing**.
+
+Three more things sit in the charts on that page.
+
+**$30.58M of the lending, 83.5% of it, went to the two highest credit score bands.** The 633 to 743 bar holds $16.42M and the Above 744 bar holds $14.16M. The bank put the overwhelming majority of its money with its best-rated customers, and still lost $6.56M.
+
+**The four products are near identical.** $9.90M, $9.21M, $8.86M and $8.65M in volume, and 16.00% to 18.11% in default rate. Product is not the problem.
+
+**$14.45M, 39.5% of all lending, sits in the Above 44k band.** That single bar is where the losses concentrate, and finding 3 below shows why.
+
+### The point of reading them together
+
+This bank was not lending carelessly. It screened on employment, put most of its money with high scorers and tightened after 2019. It still lost $6.56M and has another $7.25M at risk.
+
+That gap between how carefully the bank behaved and how badly the book performed is what the rest of this analysis explains.
+
+### Filtered views
+
+Both pages share a year slicer for 2018 to 2021, and the status bars are clickable so any breakdown can be filtered to defaults or to arrears.
+
+**Filtered to defaulted loans only:**
+
+![Defaults, all years](04_defaults_all_years.png)
+
+**Filtered to loans in arrears only:**
+
+![Arrears, all years](05_arrears_all_years.png)
 
 ---
 
@@ -236,32 +286,6 @@ Total Loan 2021 Display = FORMAT([Total Loan 2021] / 1000000, "$#,0.00") & "M"
 
 ---
 
-## The Dashboard
-
-### Page 1: Loan Portfolio Overview
-
-Who the bank lends to and how much. Headline KPIs, lending by quarter for each year, and breakdowns by age, marital status and employment status.
-
-![Loan Portfolio Overview](01_dashboard_overview.png)
-
-### Page 2: Loan Status and Type Analysis
-
-How those loans performed. Repayment, delinquency and default rates, with loan volume broken down by status, income, credit score, loan type, term, loan size and interest rate.
-
-![Loan Status and Type Analysis](02_dashboard_loan_status_type.png)
-
-Both pages share a year slicer for 2018 to 2021, and the status bars are clickable so any breakdown can be filtered to defaults or to arrears.
-
-**Filtered to defaulted loans only:**
-
-![Defaults, all years](04_defaults_all_years.png)
-
-**Filtered to loans in arrears only:**
-
-![Arrears, all years](05_arrears_all_years.png)
-
----
-
 ## Portfolio at a Glance
 
 | Measure | Value |
@@ -297,7 +321,7 @@ I worked out the same rate for every borrower group the bank records, to see whe
 | Self-employed | 311 | 54 | 17.36% |
 | Employed | 954 | 161 | 16.88% |
 
-One percentage point separates an unemployed borrower from an employed one.
+One percentage point separates an unemployed borrower from an employed one. The overview page shows the bank sending $26.05M to employed borrowers and $1.72M to unemployed, which is a 15 to 1 preference for a group that performs one point better.
 
 **Loan type**
 
@@ -333,7 +357,9 @@ A quarter of a percentage point on both.
 
 This is the one that matters most, and it is the clearest result in the table. If credit score worked, the default rate would fall steadily as the score rises. It does not. The lowest default rate in the portfolio belongs to the 522 to 632 band, which sits in the middle, and the second worst belongs to 633 to 743, which sits above it. The numbers move up and down with no relation to the score.
 
-The averages say the same thing:
+This is also where the dashboard and the data say the same thing from two directions. The dashboard shows $30.58M, 83.5% of all lending, went to the top two bands. The table shows those two bands defaulting at 18.71% and 16.50%, both close to the portfolio average of 17.13%. The bank concentrated its money where the score said it was safest, and the score was not measuring safety.
+
+The averages confirm it:
 
 | Loan outcome | Average credit score |
 |---|---|
@@ -380,6 +406,8 @@ The bank charges around 6% whether the borrower scores 350 or 800. The weakest b
 
 ### 3. The losses are concentrated in large loans, not in any borrower group
 
+The Loan Volume by Loan Amount Range chart on page 2 shows $14.45M, 39.5% of all lending, sitting in the Above 44k band. Here is what that band actually did.
+
 | Loan size | Loans | Share of book | Defaults | Default rate | Value lost | Share of all losses |
 |---|---|---|---|---|---|---|
 | $1k to $11k | 462 | 30.8% | 73 | 15.80% | $0.45M | 6.9% |
@@ -408,6 +436,8 @@ Loans above $44k are 17.3% of the book and carry 40.1% of the losses. Their defa
 Read the default column alone and 2021 looks like the best year the bank has had. Read both columns together and 2021 looks like every other year since 2019.
 
 Defaults fall in 2021 while arrears climbs. A loan issued in 2021 has not had time to be written off yet, so it sits in arrears instead. The combined figure barely moves.
+
+The volume column tells its own story. The bank cut lending from $12.28M in 2019 to $8.92M in 2021, so it was already reacting to something. The combined at risk rate shows the pullback did not change the outcome.
 
 **What it means.** The improvement is a timing effect, not a quality improvement.
 

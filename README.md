@@ -157,7 +157,7 @@ Interest should only count on loans where the borrower is actually paying. A def
 
 ## Date Table
 
-Power BI needs a dedicated date table to handle time intelligence properly. I built one in M instead of relying on the automatic date hierarchy.
+Power BI needs a dedicated date table to handle time intelligence properly. I built one in M instead of using the automatic date hierarchy.
 
 ```m
 let
